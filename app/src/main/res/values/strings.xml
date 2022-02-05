@@ -13,6 +13,8 @@
     <string name="invalid_username_text">Username cannot be empty!</string>
     <string name="valid_username_text">Welcome, %s1!</string>
 
+    <string name="cannot_get_questions_text">Cannot get questions! Try again later!</string>
+    <string name="question_counter_text">Question %d of %d</string>
 
     <string name="true_text">True</string>
     <string name="false_text">False</string>

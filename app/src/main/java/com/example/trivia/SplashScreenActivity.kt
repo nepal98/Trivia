@@ -1,14 +1,17 @@
 package com.example.trivia
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
+import com.example.trivia.constants.Constants
 import com.google.android.material.snackbar.Snackbar
+
+
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
@@ -18,6 +21,8 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var expertLevelRadioButton: RadioButton
     private lateinit var geniusLevelRadioButton: RadioButton
     private lateinit var startGameButton: Button
+    private var DIFFICULTY_MODE = "Easy"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +59,22 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun startGame() {
         if(validateUsername()) {
-            // Build an intent to launch main activity
-            Log.d("DEBUG", "LET'S GOOOOOO BABY!")
+            loadMainScreen()
         }
     }
 
+    private fun loadMainScreen() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra(Constants.USERNAME_KEY, "${usernameEditText.text}")
+            putExtra(Constants.DIFFICULTY_MODE_KEY, DIFFICULTY_MODE)
+        }
+        finish()
+        startActivity(intent)
+    }
 
     override fun onClick(view: View) {
         if(view is RadioButton) {
-            Log.d("DEBUG", "RADIO BUTTON CLICKED WAS " + view.text)
+            DIFFICULTY_MODE = view.text.toString()
         } else if(view is Button) {
             startGame()
         }
