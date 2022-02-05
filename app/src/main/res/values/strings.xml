@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">Trivia</string>
 
+
+    <string name="username_text">Username</string>
+    <string name="username_hint">What would your username like to be?</string>
+    <string name="choose_difficulty_text">Choose Difficulty</string>
+    <string name="easy_text">Easy</string>
+    <string name="medium_text">Medium</string>
+    <string name="expert_text">Expert</string>
+    <string name="genius_text">Genius</string>
+    <string name="begin_game_text">Begin Game</string>
+    <string name="invalid_username_text">Username cannot be empty!</string>
+    <string name="valid_username_text">Welcome, %s1!</string>
+
+
     <string name="true_text">True</string>
     <string name="false_text">False</string>
     <string name="next_text">Next</string>
