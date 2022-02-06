@@ -12,7 +12,7 @@ import com.example.trivia.data.QuestionsListAsyncResponse
 import com.example.trivia.model.Question
 
 class MainActivity : AppCompatActivity() , View.OnClickListener {
-    private lateinit var questionBank: QuestionBank
+    private var questionBank: QuestionBank = QuestionBank()
     private lateinit var questionsList: ArrayList<Question>
     private lateinit var questionCounterTextView: TextView
     private lateinit var questionTextView: TextView
@@ -24,10 +24,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
     private lateinit var username: String
     private lateinit var gameMode: String
     private var questionIndex = 0
-
-    init {
-        questionBank = QuestionBank()
-    }
+    private var totalQuestionsCorrect = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +39,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         })
     }
 
-    fun initialiseViews() {
+    private fun initialiseViews() {
         questionCounterTextView = findViewById(R.id.questionCounterTextView)
         questionTextView = findViewById(R.id.questionTextView)
         totalCorrectsTextView = findViewById(R.id.totalCorrectTextView)
@@ -53,34 +50,51 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         initialiseButtonListeners()
     }
 
-    fun initialiseButtonListeners() {
+    private fun initialiseButtonListeners() {
         nextQuestionButton.setOnClickListener(this)
         previousQuestionButton.setOnClickListener(this)
         trueAnswerButton.setOnClickListener(this)
         falseAnswerButton.setOnClickListener(this)
     }
 
-    fun displayQuestion() {
+    private fun displayQuestion() {
         questionCounterTextView.text = (getString(R.string.question_counter_text, (questionIndex+1), questionsList.size))
         questionTextView.text = questionsList[questionIndex].toString()
+        totalCorrectsTextView.text = (getString(R.string.total_corrects_text, (totalQuestionsCorrect), questionsList.size))
+        Log.d("ANSWER", questionsList[questionIndex].answer.toString())
     }
 
-    fun nextQuestion() {
+    private fun nextQuestion() {
         questionIndex = if(questionIndex == questionsList.size-1) questionIndex else ++questionIndex
         displayQuestion()
     }
 
-    fun previousQuestion() {
+    private fun previousQuestion() {
         questionIndex = if(questionIndex == 0) 0 else --questionIndex
         displayQuestion()
     }
 
+    private fun checkAnswer(view: View) {
+        val button = view as Button
+        val question = questionsList[questionIndex]
+        val answer = question.answer.toString()
+        if(!question.alreadyAnswered) {
+            if(answer.length == button.text.length) {
+                totalQuestionsCorrect++
+            } else {
+                totalQuestionsCorrect = if(totalQuestionsCorrect == 0) 0 else --totalQuestionsCorrect
+            }
+        }
+        question.alreadyAnswered = true
+
+        nextQuestion()
+    }
+
     override fun onClick(view: View) {
         when(view.id) {
-            R.id.trueAnswerButton -> {}
-            R.id.falseAnswerButton -> {}
-            R.id.previousQuestionButton -> {previousQuestion()}
-            R.id.nextQuestionButton -> {nextQuestion()}
+            R.id.trueAnswerButton, R.id.falseAnswerButton -> checkAnswer(view)
+            R.id.previousQuestionButton -> previousQuestion()
+            R.id.nextQuestionButton -> nextQuestion()
         }
     }
 

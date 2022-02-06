@@ -11,18 +11,12 @@ class QuestionBank {
         "https://raw.githubusercontent.com/curiousily/simple-quiz/master/script/statements-data.json"
     private var totalQuestionsToGenerate = 0
 
-    fun getQuestion(index: Int): Question? {
-        if (index > 0 && index < questionsList.size)
-            return questionsList[index]
-        return null
-    }
-
     fun generateQuestions(difficultyMode: String, callback: QuestionsListAsyncResponse) : ArrayList<Question> {
         totalQuestionsToGenerate = when(difficultyMode) {
-            "Easy" -> 10
-            "Medium" -> 20
-            "Expert" -> 30
-            "Genius" -> 50
+            "Easy" -> 25
+            "Medium" -> 50
+            "Expert" -> 75
+            "Genius" -> 100
             else -> 10
         }
         val questionsJson = JsonArrayRequest(Request.Method.GET, QUESTIONS_URL, null,

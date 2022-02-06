@@ -68,8 +68,8 @@ class SplashScreenActivity : AppCompatActivity(), View.OnClickListener {
             putExtra(Constants.USERNAME_KEY, "${usernameEditText.text}")
             putExtra(Constants.DIFFICULTY_MODE_KEY, DIFFICULTY_MODE)
         }
-        finish()
         startActivity(intent)
+        finish()
     }
 
     override fun onClick(view: View) {
