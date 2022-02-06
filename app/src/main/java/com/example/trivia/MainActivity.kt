@@ -1,5 +1,6 @@
 package com.example.trivia
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import com.example.trivia.data.QuestionBank
 import com.example.trivia.constants.Constants
 import com.example.trivia.data.QuestionsListAsyncResponse
 import com.example.trivia.model.Question
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() , View.OnClickListener {
     private var questionBank: QuestionBank = QuestionBank()
@@ -61,12 +63,36 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
         questionCounterTextView.text = (getString(R.string.question_counter_text, (questionIndex+1), questionsList.size))
         questionTextView.text = questionsList[questionIndex].toString()
         totalCorrectsTextView.text = (getString(R.string.total_corrects_text, (totalQuestionsCorrect), questionsList.size))
+        setNextButtonText()
         Log.d("ANSWER", questionsList[questionIndex].answer.toString())
     }
 
+    private fun isLastQuestion() : Boolean {
+        return questionIndex+1 == questionsList.size
+    }
+
+    private fun setNextButtonText() {
+        nextQuestionButton.text = getString(R.string.next_text)
+        if(isLastQuestion()) {
+            nextQuestionButton.text = getString(R.string.finish_text)
+        }
+    }
+
     private fun nextQuestion() {
+        if(isLastQuestion()) {
+            loadFinishGameActivity()
+        }
         questionIndex = if(questionIndex == questionsList.size-1) questionIndex else ++questionIndex
         displayQuestion()
+    }
+
+    private fun loadFinishGameActivity() {
+        val intent = Intent(this, FinishGameScreenActivity::class.java)
+        intent.putExtra(Constants.USERNAME_KEY, username)
+        intent.putExtra(Constants.SCORE_KEY, totalQuestionsCorrect)
+        intent.putExtra(Constants.DIFFICULTY_MODE_KEY, gameMode)
+        startActivity(intent)
+        finish()
     }
 
     private fun previousQuestion() {
@@ -84,6 +110,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             } else {
                 totalQuestionsCorrect = if(totalQuestionsCorrect == 0) 0 else --totalQuestionsCorrect
             }
+        } else {
+            Snackbar.make(previousQuestionButton, "You have already answered this question!", Snackbar.LENGTH_LONG).show()
         }
         question.alreadyAnswered = true
 

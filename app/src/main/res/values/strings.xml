@@ -21,4 +21,9 @@
     <string name="false_text">False</string>
     <string name="next_text">Next</string>
     <string name="previous_text">Previous</string>
+    <string name="finish_text">Finish</string>
+
+    <string name="congrats_text">Congratulations, %s!</string>
+    <string name="result_text">You scored %d questions correctly in %s mode!</string>
+
 </resources>
